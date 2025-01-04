@@ -1,0 +1,20 @@
+﻿<Window x:Class="JsonEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JsonEditor"
+        mc:Ignorable="d"
+        Title="Json Editor" Height="720" Width="1024">
+    <Grid Margin="0,0,0,-16">
+        <Button x:Name="btnNewJson" Content="Open New Json" HorizontalAlignment="Left" Margin="17,10,0,0" VerticalAlignment="Top" Click="OpenNewJsonButtonClick">
+
+        </Button>
+        <Label x:Name="labelNamedTitle" Content="Model" HorizontalAlignment="Left" Margin="11,54,0,0" VerticalAlignment="Top" FontSize="26" FontWeight="Bold"/>
+        <Border BorderBrush="Black" Margin="17,99,716,75" Background="#FFC3C3C3">
+            <StackPanel x:Name="stackPanelForModelProperties"/>
+        </Border>
+        <Button x:Name="addNewPropertyToModel" Content="New" HorizontalAlignment="Left" Margin="258,63,0,0" VerticalAlignment="Top" Background="{x:Null}" BorderThickness="0,0,0,0" Click="AddNewPropertyToModel" IsEnabled="False" Cursor="Pen" Height="32" Width="50" Padding="0,0,0,0" RenderTransformOrigin="0.5,-1" FontSize="20" BorderBrush="{x:Null}" Foreground="Black" FontWeight="Medium"/>
+
+    </Grid>
+</Window>
