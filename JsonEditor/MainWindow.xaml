@@ -14,7 +14,6 @@
         <Border x:Name="propertiesBorder" BorderBrush="Black" Margin="17,99,716,38" Background="#FFC3C3C3">
             <StackPanel x:Name="propertiesStackPanel"/>
         </Border>
-        <Button x:Name="addNewPropertyToModel" Content="New" HorizontalAlignment="Left" Margin="258,63,0,0" VerticalAlignment="Top" Background="{x:Null}" BorderThickness="0,0,0,0" Click="AddNewPropertyToModel" IsEnabled="False" Cursor="Pen" Height="32" Width="50" Padding="0,0,0,0" RenderTransformOrigin="0.5,-1" FontSize="20" BorderBrush="{x:Null}" Foreground="Black" FontWeight="Medium"/>
 
     </Grid>
 </Window>

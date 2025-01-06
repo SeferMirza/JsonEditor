@@ -123,8 +123,4 @@ public partial class MainWindow : Window
             stackPanel.Children.Add(wrapper);
         }
     }
-
-    private void AddNewPropertyToModel(object sender, RoutedEventArgs e)
-    {
-    }
 }
