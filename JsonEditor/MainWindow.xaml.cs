@@ -48,29 +48,22 @@ public partial class MainWindow : Window
             }
         }
 
-        PopulateGridWithDictionary(_jsonData, propertiesStackPanel, 0);
+        ShowJsonModel(_jsonData, propertiesStackPanel, 0);
     }
 
-    private void PopulateGridWithDictionary(Dictionary<string, object> data, StackPanel stackPanel, int indent = 0)
+    private void ShowJsonModel(Dictionary<string, object> data, StackPanel stackPanel, int indent = 0)
     {
         foreach (var kvp in data)
         {
+            JsonModelPropertyGrid wrapper = new(columnCount: 5, rowCount: 2);
+            wrapper.SetColumnWithWidthPercent(5 * (indent + 1), 40 - indent, 3, 40 - (indent * 4), 12);
+            wrapper.SetRows(2);
+
             Label indentLabel = new()
             {
                 Content = new string(' ', indent)
             };
-            Grid wrapper = new();
-            wrapper.ColumnDefinitions.Add(new() { Width = new GridLength(5 * (indent + 1), GridUnitType.Star) });
-            wrapper.ColumnDefinitions.Add(new() { Width = new GridLength(45 - indent, GridUnitType.Star) });
-            wrapper.ColumnDefinitions.Add(new() { Width = new GridLength(3, GridUnitType.Star) });
-            wrapper.ColumnDefinitions.Add(new() { Width = new GridLength(40 - (indent * 4), GridUnitType.Star) });
-            wrapper.ColumnDefinitions.Add(new() { Width = new GridLength(12, GridUnitType.Star) });
-            wrapper.RowDefinitions.Add(new());
-            wrapper.RowDefinitions.Add(new());
-
-            Grid.SetColumn(indentLabel, 0);
-            Grid.SetRow(indentLabel, 0);
-            wrapper.Children.Add(indentLabel);
+            wrapper[0, 0] = indentLabel;
 
             Label keyLabel = new()
             {
@@ -89,9 +82,7 @@ public partial class MainWindow : Window
                 keyLabel.FontWeight = FontWeights.Medium;
                 keyLabel.Background = Brushes.Transparent;
             };
-            Grid.SetRow(keyLabel, 0);
-            Grid.SetColumn(keyLabel, 1);
-            wrapper.Children.Add(keyLabel);
+            wrapper[1, 0] = keyLabel;
 
             Label valueLabel = new()
             {
@@ -100,18 +91,15 @@ public partial class MainWindow : Window
                 Padding = new Thickness(0, 0, 10, 0),
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
-            Grid.SetColumn(valueLabel, 2);
-            Grid.SetRow(valueLabel, 0);
-            wrapper.Children.Add(valueLabel);
+            wrapper[2, 0] = valueLabel;
 
             var typeofProp = kvp.Value.GetType();
             Label typeLabel = new();
             if (typeofProp.Name == typeof(Dictionary<string, object>).Name)
             {
                 StackPanel childStackPanel = new();
-                Grid.SetRow(childStackPanel, 1);
+                wrapper[0, 1] = childStackPanel;
                 Grid.SetColumnSpan(childStackPanel, 5);
-                wrapper.Children.Add(childStackPanel);
 
                 typeLabel.Content = typeof(object).Name;
                 Button expandButton = new()
@@ -122,7 +110,7 @@ public partial class MainWindow : Window
                 {
                     if (expandButton.Content.ToString() == ">")
                     {
-                        PopulateGridWithDictionary((Dictionary<string, object>)kvp.Value, childStackPanel, indent + 1);
+                        ShowJsonModel((Dictionary<string, object>)kvp.Value, childStackPanel, indent + 1);
                         expandButton.Content = "v";
                     }
                     else
@@ -131,18 +119,15 @@ public partial class MainWindow : Window
                         expandButton.Content = ">";
                     }
                 };
-                Grid.SetColumn(expandButton, 4);
-                Grid.SetRow(expandButton, 0);
-                wrapper.Children.Add(expandButton);
+                wrapper[4, 0] = expandButton;
             }
             else
             {
                 if (typeofProp.FullName == typeof(List<object>).FullName)
                 {
                     StackPanel childStackPanel = new();
-                    Grid.SetRow(childStackPanel, 1);
+                    wrapper[0, 1] = childStackPanel;
                     Grid.SetColumnSpan(childStackPanel, 5);
-                    wrapper.Children.Add(childStackPanel);
 
                     typeLabel.Content = "List<Object>";
                     Button expandButton = new()
@@ -153,7 +138,7 @@ public partial class MainWindow : Window
                     {
                         if (expandButton.Content.ToString() == ">")
                         {
-                            PopulateGridWithDictionary((Dictionary<string, object>)kvp.Value, childStackPanel, indent + 1);
+                            ShowJsonModel((Dictionary<string, object>)kvp.Value, childStackPanel, indent + 1);
                             expandButton.Content = "v";
                         }
                         else
@@ -177,11 +162,9 @@ public partial class MainWindow : Window
                 }
             }
 
-            Grid.SetColumn(typeLabel, 3);
-            Grid.SetRow(typeLabel, 0);
-            wrapper.Children.Add(typeLabel);
+            wrapper[3, 0] = typeLabel;
 
-            stackPanel.Children.Add(wrapper);
+            stackPanel.Children.Add(wrapper.GetGrid);
         }
     }
 }
