@@ -12,7 +12,6 @@
         </Button>
         <Label x:Name="labelEdit" Content="Edit" HorizontalAlignment="Left" Margin="11,54,0,0" VerticalAlignment="Top" FontSize="26" FontWeight="Bold"/>
         <Border x:Name="propertiesBorder" BorderBrush="Black" Margin="17,99,716,38" Background="#FFC3C3C3">
-            <StackPanel x:Name="propertiesStackPanel"/>
         </Border>
 
     </Grid>
