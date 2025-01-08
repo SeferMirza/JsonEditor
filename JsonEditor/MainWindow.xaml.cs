@@ -1,21 +1,20 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace JsonEditor;
 
 public partial class MainWindow : Window
 {
     Dictionary<string, object> _jsonData = [];
+
     public MainWindow()
     {
         InitializeComponent();
-    }
-
-    private void Refresh()
-    {
-        
     }
 
     private void OpenNewJsonButtonClick(object sender, RoutedEventArgs e)
@@ -49,7 +48,6 @@ public partial class MainWindow : Window
             }
         }
 
-        addNewPropertyToModel.IsEnabled = true;
         PopulateGridWithDictionary(_jsonData, propertiesStackPanel, 0);
     }
 
@@ -58,7 +56,7 @@ public partial class MainWindow : Window
         foreach (var kvp in data)
         {
             Label indentLabel = new()
-            { 
+            {
                 Content = new string(' ', indent)
             };
             Grid wrapper = new();
@@ -74,10 +72,26 @@ public partial class MainWindow : Window
             Grid.SetRow(indentLabel, 0);
             wrapper.Children.Add(indentLabel);
 
-            TextBox keyTextBox = new() { Text = kvp.Key };
-            Grid.SetRow(keyTextBox, 0);
-            Grid.SetColumn(keyTextBox, 1);
-            wrapper.Children.Add(keyTextBox);
+            Label keyLabel = new()
+            {
+                Content = kvp.Key,
+                Cursor = Cursors.Hand,
+                FontWeight = FontWeights.Medium,
+                Background = Brushes.Transparent
+            };
+            keyLabel.MouseEnter += (sender, e) =>
+            {
+                keyLabel.FontWeight = FontWeights.Bold;
+                keyLabel.Background = Brushes.LightGray;
+            };
+            keyLabel.MouseLeave += (sender, e) =>
+            {
+                keyLabel.FontWeight = FontWeights.Medium;
+                keyLabel.Background = Brushes.Transparent;
+            };
+            Grid.SetRow(keyLabel, 0);
+            Grid.SetColumn(keyLabel, 1);
+            wrapper.Children.Add(keyLabel);
 
             Label valueLabel = new()
             {
@@ -90,30 +104,77 @@ public partial class MainWindow : Window
             Grid.SetRow(valueLabel, 0);
             wrapper.Children.Add(valueLabel);
 
-            var typeofProp = kvp.Value.GetType().Name;
+            var typeofProp = kvp.Value.GetType();
             Label typeLabel = new();
-            if (typeofProp == typeof(Dictionary<string, object>).Name)
+            if (typeofProp.Name == typeof(Dictionary<string, object>).Name)
             {
+                StackPanel childStackPanel = new();
+                Grid.SetRow(childStackPanel, 1);
+                Grid.SetColumnSpan(childStackPanel, 5);
+                wrapper.Children.Add(childStackPanel);
+
                 typeLabel.Content = typeof(object).Name;
                 Button expandButton = new()
                 {
-                    Content = "..."
+                    Content = ">"
                 };
                 expandButton.Click += (sender, e) =>
                 {
-                    StackPanel childStackPanel = new();
-                    Grid.SetRow(childStackPanel, 1);
-                    Grid.SetColumnSpan(childStackPanel, 5);
-                    wrapper.Children.Add(childStackPanel);
-                    PopulateGridWithDictionary((Dictionary<string, object>)kvp.Value, childStackPanel, indent + 1);
+                    if (expandButton.Content.ToString() == ">")
+                    {
+                        PopulateGridWithDictionary((Dictionary<string, object>)kvp.Value, childStackPanel, indent + 1);
+                        expandButton.Content = "v";
+                    }
+                    else
+                    {
+                        childStackPanel.Children.Clear();
+                        expandButton.Content = ">";
+                    }
                 };
-                Grid.SetColumn(expandButton , 4);
+                Grid.SetColumn(expandButton, 4);
                 Grid.SetRow(expandButton, 0);
                 wrapper.Children.Add(expandButton);
             }
             else
             {
-                typeLabel.Content = typeofProp;
+                if (typeofProp.FullName == typeof(List<object>).FullName)
+                {
+                    StackPanel childStackPanel = new();
+                    Grid.SetRow(childStackPanel, 1);
+                    Grid.SetColumnSpan(childStackPanel, 5);
+                    wrapper.Children.Add(childStackPanel);
+
+                    typeLabel.Content = "List<Object>";
+                    Button expandButton = new()
+                    {
+                        Content = ">"
+                    };
+                    expandButton.Click += (sender, e) =>
+                    {
+                        if (expandButton.Content.ToString() == ">")
+                        {
+                            PopulateGridWithDictionary((Dictionary<string, object>)kvp.Value, childStackPanel, indent + 1);
+                            expandButton.Content = "v";
+                        }
+                        else
+                        {
+                            childStackPanel.Children.Clear();
+                            expandButton.Content = ">";
+                        }
+                    };
+                }
+                else if (typeofProp.FullName == typeof(List<object>).FullName)
+                {
+                    typeLabel.Content = "List<string>";
+                }
+                else if (typeofProp.FullName == typeof(List<int>).FullName)
+                {
+                    typeLabel.Content = "List<int>";
+                }
+                else
+                {
+                    typeLabel.Content = typeofProp.Name;
+                }
             }
 
             Grid.SetColumn(typeLabel, 3);
