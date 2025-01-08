@@ -72,3 +72,4 @@ bld/
 *.appxupload
 *.appxuploadblockmap
 *.appxuploadsignature
+/.vs
