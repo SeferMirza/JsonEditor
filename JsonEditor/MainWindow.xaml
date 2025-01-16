@@ -6,13 +6,122 @@
         xmlns:local="clr-namespace:JsonEditor"
         mc:Ignorable="d"
         Title="Json Editor" Height="720" Width="1024">
-    <Grid Margin="0,0,0,-16">
-        <Button x:Name="btnNewJson" Content="Open New Json" HorizontalAlignment="Left" Margin="17,10,0,0" VerticalAlignment="Top" Click="OpenNewJsonButtonClick">
-
-        </Button>
-        <Label x:Name="labelEdit" Content="Edit" HorizontalAlignment="Left" Margin="11,54,0,0" VerticalAlignment="Top" FontSize="26" FontWeight="Bold"/>
-        <Border x:Name="propertiesBorder" BorderBrush="Black" Margin="17,99,716,38" Background="#FFC3C3C3">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="btnNewJson" Content="New" HorizontalAlignment="Left" VerticalAlignment="Top" Click="OpenNewJsonButtonClick" Width="40" Margin="10,0,0,0" BorderThickness="0,0,0,0" Grid.Column="1"/>
+        <Label x:Name="labelEdit" Content="Model" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" FontSize="26" FontWeight="Bold" Height="49" Grid.RowSpan="2" Grid.Column="1"/>
+        <Border x:Name="propertiesBorder" BorderBrush="Black" Margin="10,10,10,10" Background="#FFC3C3C3" Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="1">
+            <ScrollViewer x:Name="modelScrollBar"/>
         </Border>
-
+        <Label Content="Key:" HorizontalAlignment="Left" Margin="422,100,0,0" VerticalAlignment="Top"/>
+        <Border x:Name="propertyDetailBorder" BorderBrush="Black" Margin="10,10,10,10" Background="#FFC3C3C3" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Key :" HorizontalAlignment="Left" Margin="21,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="15"/>
+                    <TextBox Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="69,0,0,0" TextWrapping="Wrap" Text="TextBox" Width="120" Height="25" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                    <Label Grid.Column="2" Content="Value :" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="15" Grid.ColumnSpan="2" Margin="52,0,0,0"/>
+                    <TextBox Grid.Column="3" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="38,0,0,0" TextWrapping="Wrap" Text="TextBox" Width="120" Height="25" VerticalAlignment="Center" VerticalContentAlignment="Center" IsEnabled="False"/>
+                    <WrapPanel Grid.Row="1" Grid.ColumnSpan="6" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #1 :" HorizontalAlignment="Center" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #1 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #3 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #3 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #4 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #4 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #5 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #5 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #6 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #6 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #7 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #7 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #8 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #8 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="5" Grid.ColumnSpan="3" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #9 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #9 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #10 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #10 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="6" Grid.ColumnSpan="3" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #11 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #11 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3" VerticalAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Center">
+                        <Label Content="Property #12 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                        <Label Content="Value #1 :" Width="84"/>
+                        <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" IsEnabled="False"/>
+                    </WrapPanel>
+                    <Button Grid.Column="5" Content="Save" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" IsEnabled="False" Width="50" Height="25" Margin="14,0,0,0"/>
+                    <Border Grid.Row="0" Grid.ColumnSpan="6" BorderThickness="0,0,0,1" BorderBrush="Black"/>
+                </Grid>
+            </ScrollViewer>
+        </Border>
+        <Label x:Name="labelEdit_Copy" Content="Detail" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" FontSize="26" FontWeight="Bold" Height="49" Grid.RowSpan="2" Grid.Column="4"/>
     </Grid>
 </Window>
