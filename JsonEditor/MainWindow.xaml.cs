@@ -1,28 +1,34 @@
-﻿using System.IO;
-using System.Text.Json;
+﻿using JsonEditor.Components;
+using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace JsonEditor;
 
 public partial class MainWindow : Window
 {
     Dictionary<string, object> _jsonData = [];
-
-    public MainWindow()
+    private readonly JsonService _jsonService;
+    readonly EditProperty editProperty = new();
+    public MainWindow(JsonService jsonService)
     {
+        _jsonService = jsonService;
+
         InitializeComponent();
+        ScrollViewer scrollViewer = new();
+        scrollViewer.Content = editProperty.Root;
+        propertyDetailBorder.Child = scrollViewer;
     }
 
     private void OpenNewJsonButtonClick(object sender, RoutedEventArgs e)
     {
-        var dialog = new Microsoft.Win32.OpenFileDialog();
-        dialog.FileName = "Document";
-        dialog.DefaultExt = ".json";
-        dialog.Filter = "Json files (.json)|*.json";
-        dialog.Multiselect = false;
+        OpenFileDialog dialog = new()
+        {
+            FileName = "Document",
+            DefaultExt = ".json",
+            Filter = "Json files (.json)|*.json",
+            Multiselect = false
+        };
 
         bool? result = dialog.ShowDialog();
 
@@ -37,17 +43,23 @@ public partial class MainWindow : Window
             mboxResult = MessageBox.Show($"Is file path '{filename}' correct?", caption, button, icon, MessageBoxResult.Yes);
             if (mboxResult == MessageBoxResult.Yes)
             {
-                using StreamReader r = new(filename);
-                string jsonString = r.ReadToEnd();
+                _jsonData = _jsonService.OpenJson(filename);
 
-                using var document = JsonDocument.Parse(jsonString);
-                var elements = document.RootElement.ParseToDictionary();
-
-                _jsonData = elements;
+                JsonModelStackPanel jsonModel = new(_jsonData, _jsonService);
+                jsonModel.SelectProperty += JsonModel_ValueSelected;
+                modelScrollBar.Content= jsonModel.Base;
             }
         }
+    }
 
-        JsonModelStackPanel jsonModel = new JsonModelStackPanel(_jsonData);
-        propertiesBorder.Child = jsonModel.Base;
-    } 
+    private void JsonModel_ValueSelected(string key, object value)
+    {
+        editProperty.FillTheProperties(key, value);
+    }
+
+    private void JsonModel_Update(string key, object value)
+    {
+        MessageBox.Show("Hi");
+        _jsonData[key] = value;
+    }
 }

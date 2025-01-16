@@ -8,15 +8,19 @@ namespace JsonEditor;
 public class JsonModelStackPanel
 {
     readonly StackPanel _base = new();
+    readonly JsonService _jsonService;
+
+    public event Action<string, object>? SelectProperty;
 
     public StackPanel Base => _base;
 
-    public JsonModelStackPanel(Dictionary<string, object> _json)
+    public JsonModelStackPanel(Dictionary<string, object> json, JsonService jsonService)
     {
-        GenerateModel(_json, _base, 0);
+        GenerateModel(json, _base, [], 0);
+        _jsonService = jsonService;
     }
 
-    void GenerateModel(Dictionary<string, object> data, StackPanel stackPanel, int indent = 0)
+    void GenerateModel(Dictionary<string, object> data, StackPanel stackPanel, List<string> path, int indent = 0)
     {
         foreach ((string key, object value) in data)
         {
@@ -51,8 +55,13 @@ public class JsonModelStackPanel
                 keyLabel.FontWeight = FontWeights.Medium;
                 keyLabel.Background = Brushes.Transparent;
             };
+            keyLabel.MouseLeftButtonUp += (sender, e) =>
+            {
+                var selected = _jsonService.SelectProperty([.. path, key]);
+                SelectProperty?.Invoke(selected.key, selected.value);
+            };
             wrapper[1, 0] = keyLabel;
-
+            
             Label valueLabel = new()
             {
                 Content = ":",
@@ -73,7 +82,7 @@ public class JsonModelStackPanel
                 {
                     if (expandButton.Content.ToString() == ">")
                     {
-                        GenerateModel(json, childStackPanel, indent + 1);
+                        GenerateModel(json, childStackPanel, [..path, key], indent + 1);
                         expandButton.Content = "v";
                     }
                     else

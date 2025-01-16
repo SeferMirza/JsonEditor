@@ -81,6 +81,11 @@ public static class JsonExtensions
             return $"{typeName}<{genericArgs}>";
         }
 
+        if (type.IsArray)
+        {
+            return $"{type.GetElementType()?.GetFriendlyTypeName()}[]";
+        }
+
         return type.Name;
     }
 }
